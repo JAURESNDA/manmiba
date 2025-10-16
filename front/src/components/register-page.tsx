@@ -24,6 +24,7 @@ export function RegisterPage({ onRegister, onBackToHome, onShowLogin }: Register
     password: '',
     confirmPassword: '',
     userType: '',
+    situation: '',
     city: '',
     acceptTerms: false
   });
@@ -35,6 +36,15 @@ export function RegisterPage({ onRegister, onBackToHome, onShowLogin }: Register
   const cities = [
     'Abidjan', 'Bouaké', 'Daloa', 'Yamoussoukro', 'San-Pédro', 
     'Korhogo', 'Man', 'Divo', 'Gagnoa', 'Abengourou'
+  ];
+
+  const situations = [
+    { value: 'urbaine-connectee', label: 'Maman urbaine connectée', icon: '📱', description: 'Active, connectée et urbaine' },
+    { value: 'rurale-debrouillarde', label: 'Maman rurale débrouillarde', icon: '🌾', description: 'Autonome et proche de la nature' },
+    { value: 'future-maman-moderne', label: 'Future maman moderne', icon: '🤰', description: 'Enceinte et bien informée' },
+    { value: 'grand-mere-gardienne', label: 'Grand-mère gardienne', icon: '👵', description: 'Gardienne des traditions' },
+    { value: 'professionnelle-sante', label: 'Professionnelle de santé', icon: '👩‍⚕️', description: 'Soignante engagée' },
+    { value: 'autre', label: 'Autre situation', icon: '👤', description: 'Une autre situation' }
   ];
 
   const validateStep = (step: number): boolean => {
@@ -54,6 +64,7 @@ export function RegisterPage({ onRegister, onBackToHome, onShowLogin }: Register
       else if (formData.password.length < 6) newErrors.password = 'Le mot de passe doit contenir au moins 6 caractères';
       if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Les mots de passe ne correspondent pas';
       if (!formData.userType) newErrors.userType = 'Sélectionnez votre profil';
+      if (!formData.situation) newErrors.situation = 'Sélectionnez votre situation';
       if (!formData.city) newErrors.city = 'Sélectionnez votre ville';
       if (!formData.acceptTerms) newErrors.acceptTerms = 'Vous devez accepter les conditions d\'utilisation';
     }
@@ -88,6 +99,7 @@ export function RegisterPage({ onRegister, onBackToHome, onShowLogin }: Register
         email: formData.email,
         phone: formData.phone,
         userType: formData.userType,
+        situation: formData.situation,
         city: formData.city
       });
     } catch {
@@ -295,6 +307,29 @@ export function RegisterPage({ onRegister, onBackToHome, onShowLogin }: Register
                       </SelectContent>
                     </Select>
                     {errors.userType && <p className="text-xs text-destructive">{errors.userType}</p>}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Ma situation</Label>
+                    <Select value={formData.situation} onValueChange={(value) => handleInputChange('situation', value)}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Décrivez votre situation" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {situations.map((situation) => (
+                          <SelectItem key={situation.value} value={situation.value}>
+                            <div className="flex items-center gap-2">
+                              <span>{situation.icon}</span>
+                              <div className="flex flex-col">
+                                <span className="font-medium">{situation.label}</span>
+                                <span className="text-xs text-muted-foreground">{situation.description}</span>
+                              </div>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {errors.situation && <p className="text-xs text-destructive">{errors.situation}</p>}
                   </div>
 
                   <div className="space-y-2">

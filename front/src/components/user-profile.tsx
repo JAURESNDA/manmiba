@@ -41,6 +41,8 @@ export function UserProfile({ user, userRole, onUpdateProfile }) {
     address: user?.address || '',
     dateOfBirth: user?.dateOfBirth || '',
     bloodType: user?.bloodType || '',
+    situation: user?.situation || '',
+    city: user?.city || '',
     specialty: user?.specialty || '',
     licenseNumber: user?.licenseNumber || '',
     hospital: user?.hospital || '',
@@ -71,6 +73,8 @@ export function UserProfile({ user, userRole, onUpdateProfile }) {
       address: user?.address || '',
       dateOfBirth: user?.dateOfBirth || '',
       bloodType: user?.bloodType || '',
+      situation: user?.situation || '',
+      city: user?.city || '',
       specialty: user?.specialty || '',
       licenseNumber: user?.licenseNumber || '',
       hospital: user?.hospital || '',
@@ -82,6 +86,15 @@ export function UserProfile({ user, userRole, onUpdateProfile }) {
       medicalHistory: user?.medicalHistory || '',
     });
     setIsEditing(false);
+  };
+
+  const situations = {
+    'urbaine-connectee': { label: 'Maman urbaine connectée', icon: '📱' },
+    'rurale-debrouillarde': { label: 'Maman rurale débrouillarde', icon: '🌾' },
+    'future-maman-moderne': { label: 'Future maman moderne', icon: '🤰' },
+    'grand-mere-gardienne': { label: 'Grand-mère gardienne', icon: '👵' },
+    'professionnelle-sante': { label: 'Professionnelle de santé', icon: '👩‍⚕️' },
+    'autre': { label: 'Autre situation', icon: '👤' }
   };
 
   // Determine user icon and title based on role
@@ -163,14 +176,26 @@ export function UserProfile({ user, userRole, onUpdateProfile }) {
                 )}
               </div>
 
-              {isHealthProfessional && formData.specialty && (
-                <div className="mt-3">
+              <div className="mt-3 flex flex-wrap gap-2 justify-center md:justify-start">
+                {isHealthProfessional && formData.specialty && (
                   <Badge variant="outline">
                     <GraduationCap className="h-3 w-3 mr-1" />
                     {formData.specialty}
                   </Badge>
-                </div>
-              )}
+                )}
+                {formData.situation && situations[formData.situation] && (
+                  <Badge variant="secondary">
+                    <span className="mr-1">{situations[formData.situation].icon}</span>
+                    {situations[formData.situation].label}
+                  </Badge>
+                )}
+                {formData.city && (
+                  <Badge variant="outline">
+                    <MapPin className="h-3 w-3 mr-1" />
+                    {formData.city}
+                  </Badge>
+                )}
+              </div>
             </div>
 
             {/* Action Buttons */}
@@ -269,6 +294,33 @@ export function UserProfile({ user, userRole, onUpdateProfile }) {
                     onChange={(e) => handleInputChange('address', e.target.value)}
                     disabled={!isEditing}
                   />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="city">Ville</Label>
+                  <Input
+                    id="city"
+                    value={formData.city}
+                    onChange={(e) => handleInputChange('city', e.target.value)}
+                    disabled={!isEditing}
+                    placeholder="Votre ville"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="situation">Ma situation</Label>
+                  <Input
+                    id="situation"
+                    value={formData.situation ? situations[formData.situation]?.label || formData.situation : ''}
+                    disabled={true}
+                    placeholder="Non renseignée"
+                    className="bg-muted"
+                  />
+                  {!isEditing && (
+                    <p className="text-xs text-muted-foreground">
+                      Définie lors de l'inscription
+                    </p>
+                  )}
                 </div>
 
                 {!isHealthProfessional && (
