@@ -187,7 +187,7 @@ export function UserPersonas() {
           Nos Utilisatrices Types
         </h2>
         <p className="text-muted-foreground">
-          Découvrez comment eMarternité accompagne différents profils d'utilisatrices en Côte d'Ivoire
+          Découvrez comment Manmi Ba accompagne différents profils d'utilisatrices en Côte d'Ivoire
         </p>
       </div>
 
@@ -281,7 +281,7 @@ export function UserPersonas() {
             <div>
               <h3 className="font-medium mb-2">Une solution pour toutes</h3>
               <p className="text-sm text-muted-foreground">
-                eMarternité s'adapte aux besoins spécifiques de chaque utilisatrice, 
+                Manmi Ba s'adapte aux besoins spécifiques de chaque utilisatrice, 
                 de la jeune maman urbaine connectée à l'agente de santé sur le terrain, 
                 en passant par la grand-mère gardienne des traditions.
               </p>

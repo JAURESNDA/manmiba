@@ -115,7 +115,7 @@ export function RegisterPage({ onRegister, onBackToHome, onShowLogin }: Register
           </Button>
           <div className="flex items-center gap-2">
             <Baby className="h-6 w-6 text-primary" />
-            <h1 className="font-semibold">Manmi ba</h1>
+            <h1 className="font-semibold">Manmi Ba</h1>
           </div>
           <div className="w-20" /> {/* Spacer for centering */}
         </div>
