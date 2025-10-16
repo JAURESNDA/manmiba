@@ -14,7 +14,8 @@ import {
   MessageCircle,
   Baby,
   LogOut,
-  X
+  X,
+  User
 } from 'lucide-react';
 
 export function AppSidebar({ 
@@ -31,6 +32,7 @@ export function AppSidebar({
 
   const menuItems = userType === 'parent' ? [
     { id: 'home', label: 'Accueil', icon: Home },
+    { id: 'profile', label: 'Mon Profil', icon: User },
     { id: 'vaccinations', label: 'Vaccinations', icon: Syringe, badge: getPendingVaccinations() },
     { id: 'growth', label: 'Croissance', icon: TrendingUp },
     { id: 'journal', label: 'Journal', icon: BookOpen },
@@ -41,6 +43,7 @@ export function AppSidebar({
     { id: 'education', label: 'Éducation', icon: GraduationCap },
   ] : [
     { id: 'home', label: 'Accueil', icon: Home },
+    { id: 'profile', label: 'Mon Profil', icon: User },
     { id: 'symptoms', label: 'Symptômes', icon: Stethoscope },
     { id: 'nutrition', label: 'Nutrition', icon: Apple },
     { id: 'directory', label: 'Annuaire', icon: MapPin },

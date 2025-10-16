@@ -22,6 +22,7 @@ import { RegisterPage } from './components/register-page';
 import { Chatbot } from './components/chatbot';
 import { NotificationsPanel } from './components/notifications-panel';
 import { FeaturesCarousel } from './components/features-carousel';
+import { UserProfile } from './components/user-profile';
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -248,6 +249,11 @@ export default function App() {
   const handleLogoClick = () => {
     setCurrentPage('app');
     setActiveTab('home');
+  };
+
+  const handleUpdateProfile = (updatedData) => {
+    setUser(prev => ({ ...prev, ...updatedData }));
+    alert('Profil mis à jour avec succès !');
   };
 
   // Handle page navigation
@@ -543,6 +549,15 @@ export default function App() {
                   )}
                 </TabsContent>
 
+                {/* Profile Tab */}
+                <TabsContent value="profile" className="mt-0">
+                  <UserProfile 
+                    user={user}
+                    userRole={userType}
+                    onUpdateProfile={handleUpdateProfile}
+                  />
+                </TabsContent>
+
                 {userType === 'parent' && (
                   <>
                     <TabsContent value="vaccinations" className="mt-0">
@@ -722,6 +737,17 @@ export default function App() {
               <span className="text-xs">Accueil</span>
             </button>
             
+            <button
+              onClick={() => setActiveTab('profile')}
+              className={`flex flex-col items-center justify-center gap-1 h-full transition-colors ${
+                activeTab === 'profile' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
+              }`}
+              title="Mon Profil"
+            >
+              <User className="h-5 w-5" />
+              <span className="text-xs">Profil</span>
+            </button>
+
             {userType === 'parent' ? (
               <>
                 <button
@@ -733,16 +759,6 @@ export default function App() {
                 >
                   <Syringe className="h-5 w-5" />
                   <span className="text-xs">Vaccins</span>
-                </button>
-                <button
-                  onClick={() => setActiveTab('growth')}
-                  className={`flex flex-col items-center justify-center gap-1 h-full transition-colors ${
-                    activeTab === 'growth' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
-                  }`}
-                  title="Croissance"
-                >
-                  <TrendingUp className="h-5 w-5" />
-                  <span className="text-xs">Croissance</span>
                 </button>
                 <button
                   onClick={() => setActiveTab('journal')}
@@ -777,16 +793,6 @@ export default function App() {
                   <Apple className="h-5 w-5" />
                   <span className="text-xs">Nutrition</span>
                 </button>
-                <button
-                  onClick={() => setActiveTab('community')}
-                  className={`flex flex-col items-center justify-center gap-1 h-full transition-colors ${
-                    activeTab === 'community' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
-                  }`}
-                  title="Communauté"
-                >
-                  <MessageCircle className="h-5 w-5" />
-                  <span className="text-xs">Communauté</span>
-                </button>
               </>
             )}
             
@@ -808,6 +814,10 @@ export default function App() {
               <DropdownMenuContent align="end" className="w-48">
                 {userType === 'parent' && (
                   <>
+                    <DropdownMenuItem onClick={() => setActiveTab('growth')}>
+                      <TrendingUp className="h-4 w-4 mr-2" />
+                      Croissance
+                    </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setActiveTab('symptoms')}>
                       <Stethoscope className="h-4 w-4 mr-2" />
                       Symptômes
@@ -816,12 +826,12 @@ export default function App() {
                       <Apple className="h-4 w-4 mr-2" />
                       Nutrition
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setActiveTab('community')}>
-                      <MessageCircle className="h-4 w-4 mr-2" />
-                      Communauté
-                    </DropdownMenuItem>
                   </>
                 )}
+                <DropdownMenuItem onClick={() => setActiveTab('community')}>
+                  <MessageCircle className="h-4 w-4 mr-2" />
+                  Communauté
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setActiveTab('directory')}>
                   <MapPin className="h-4 w-4 mr-2" />
                   Annuaire médical
