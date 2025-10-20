@@ -15,7 +15,8 @@ import {
   Baby,
   LogOut,
   X,
-  User
+  User,
+  Users2 // <-- Ajout de l'icône Users
 } from 'lucide-react';
 
 export function AppSidebar({ 
@@ -33,7 +34,7 @@ export function AppSidebar({
   const menuItems = userType === 'parent' ? [
     { id: 'home', label: 'Accueil', icon: Home },
     { id: 'social', label: 'Fil Social', icon: MessageCircle },
-    { id: 'connections', label: 'Connexions', icon: Users },
+    { id: 'connections', label: 'Connexions', icon: Users2 }, // <-- Utilisation de Users2
     { id: 'profile', label: 'Mon Profil', icon: User },
     { id: 'vaccinations', label: 'Vaccinations', icon: Syringe, badge: getPendingVaccinations() },
     { id: 'growth', label: 'Croissance', icon: TrendingUp },
@@ -45,7 +46,7 @@ export function AppSidebar({
   ] : [
     { id: 'home', label: 'Accueil', icon: Home },
     { id: 'social', label: 'Fil Social', icon: MessageCircle },
-    { id: 'connections', label: 'Connexions', icon: Users },
+    { id: 'connections', label: 'Connexions', icon: Users2 }, // <-- Utilisation de Users2
     { id: 'profile', label: 'Mon Profil', icon: User },
     { id: 'symptoms', label: 'Symptômes', icon: Stethoscope },
     { id: 'nutrition', label: 'Nutrition', icon: Apple },

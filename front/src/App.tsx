@@ -236,10 +236,15 @@ export default function App() {
     setUserType(userData.userType);
     
     // Détecter si c'est un professionnel de santé
-    if (userData.situation === 'professionnelle-sante') {
-      setUserRole(userData.professionalRole || 'doctor');
+    if (userData.situation === 'professionnelle-sante' || userData.role === 'doctor' || userData.role === 'midwife' || userData.role === 'nurse') {
+      setUserRole(userData.professionalRole || userData.role || 'doctor');
     } else {
       setUserRole(null);
+    }
+    
+    // Sélectionner le premier enfant si disponible
+    if (userData.children && userData.children.length > 0) {
+      setSelectedChild(userData.children[0]);
     }
     
     setCurrentPage('app');
@@ -251,8 +256,8 @@ export default function App() {
     setUserType(userData.userType);
     
     // Détecter si c'est un professionnel de santé
-    if (userData.situation === 'professionnelle-sante') {
-      setUserRole(userData.professionalRole || 'doctor');
+    if (userData.situation === 'professionnelle-sante' || userData.role === 'doctor' || userData.role === 'midwife' || userData.role === 'nurse') {
+      setUserRole(userData.professionalRole || userData.role || 'doctor');
     } else {
       setUserRole(null);
     }

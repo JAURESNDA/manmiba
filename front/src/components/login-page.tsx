@@ -6,6 +6,7 @@ import { Label } from "./ui/label";
 import { Separator } from "./ui/separator";
 import { Alert, AlertDescription } from "./ui/alert";
 import { ImageWithFallback } from './figma/ImageWithFallback';
+import { authenticateUser, demoUsers } from '../utils/demo-users';
 import { 
   Eye, 
   EyeOff, 
@@ -17,7 +18,8 @@ import {
   Heart,
   Syringe,
   TrendingUp,
-  Stethoscope
+  Stethoscope,
+  Info
 } from "lucide-react";
 
 const carouselSlides = [
@@ -56,6 +58,7 @@ export function LoginPage({ onLogin, onBackToHome, onShowRegister }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [showDemoAccounts, setShowDemoAccounts] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,22 +68,27 @@ export function LoginPage({ onLogin, onBackToHome, onShowRegister }) {
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      if (formData.email === 'demo@manmiba.ci' && formData.password === 'demo123') {
-        onLogin({
-          id: '1',
-          name: 'Sarah Kouamé',
-          email: formData.email,
-          phone: '+225 07 88 99 11 22',
-          userType: 'parent'
-        });
+      const user = authenticateUser(formData.email, formData.password);
+      
+      if (user) {
+        onLogin(user);
       } else {
-        setError('Email ou mot de passe incorrect. Utilisez demo@manmiba.ci / demo123 pour tester.');
+        setError('Email ou mot de passe incorrect. Utilisez les comptes de démonstration ci-dessous.');
       }
     } catch {
       setError('Erreur de connexion. Veuillez réessayer.');
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleDemoLogin = (userKey) => {
+    const user = demoUsers[userKey];
+    setFormData({
+      email: user.email,
+      password: user.password
+    });
+    setShowDemoAccounts(false);
   };
 
   const handleInputChange = (field, value) => {
@@ -200,6 +208,146 @@ export function LoginPage({ onLogin, onBackToHome, onShowRegister }) {
                   </Alert>
                 )}
 
+                {/* Comptes de démonstration */}
+                <Alert className="bg-blue-50 border-blue-200">
+                  <Info className="h-4 w-4 text-blue-600" />
+                  <AlertDescription className="text-sm">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-blue-900 font-medium">Comptes de démonstration</span>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setShowDemoAccounts(!showDemoAccounts)}
+                        className="text-blue-600 hover:text-blue-700 h-auto py-1"
+                      >
+                        {showDemoAccounts ? 'Masquer' : 'Afficher'}
+                      </Button>
+                    </div>
+                    
+                    {showDemoAccounts && (
+                      <div className="mt-3 space-y-2 max-h-64 overflow-y-auto">
+                        <div className="grid gap-2">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleDemoLogin('admin')}
+                            className="justify-start text-left h-auto py-2"
+                          >
+                            <span className="mr-2">👨‍💼</span>
+                            <div className="text-xs">
+                              <div className="font-semibold">Administrateur</div>
+                              <div className="text-muted-foreground">admin@manmiba.ci</div>
+                            </div>
+                          </Button>
+                          
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleDemoLogin('sarahKouame')}
+                            className="justify-start text-left h-auto py-2"
+                          >
+                            <span className="mr-2">📱</span>
+                            <div className="text-xs">
+                              <div className="font-semibold">Maman urbaine - Sarah</div>
+                              <div className="text-muted-foreground">sarah.kouame@gmail.com</div>
+                            </div>
+                          </Button>
+
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleDemoLogin('kouassiDavid')}
+                            className="justify-start text-left h-auto py-2"
+                          >
+                            <span className="mr-2">👨‍👦</span>
+                            <div className="text-xs">
+                              <div className="font-semibold">Papa célibataire - David</div>
+                              <div className="text-muted-foreground">kouassi.david@gmail.com</div>
+                            </div>
+                          </Button>
+
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleDemoLogin('jeanClaudeBamba')}
+                            className="justify-start text-left h-auto py-2"
+                          >
+                            <span className="mr-2">🕊️</span>
+                            <div className="text-xs">
+                              <div className="font-semibold">Papa veuf - Jean-Claude</div>
+                              <div className="text-muted-foreground">jc.bamba@gmail.com</div>
+                            </div>
+                          </Button>
+
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleDemoLogin('aminataTraore')}
+                            className="justify-start text-left h-auto py-2"
+                          >
+                            <span className="mr-2">🤰</span>
+                            <div className="text-xs">
+                              <div className="font-semibold">Future maman - Aminata</div>
+                              <div className="text-muted-foreground">aminata.traore@gmail.com</div>
+                            </div>
+                          </Button>
+
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleDemoLogin('drNguessan')}
+                            className="justify-start text-left h-auto py-2"
+                          >
+                            <span className="mr-2">👩‍⚕️</span>
+                            <div className="text-xs">
+                              <div className="font-semibold">Médecin - Dr. N'Guessan</div>
+                              <div className="text-muted-foreground">dr.nguessan@chu-yopougon.ci</div>
+                            </div>
+                          </Button>
+
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleDemoLogin('ayaSageFemme')}
+                            className="justify-start text-left h-auto py-2"
+                          >
+                            <span className="mr-2">🤱</span>
+                            <div className="text-xs">
+                              <div className="font-semibold">Sage-femme - Aya</div>
+                              <div className="text-muted-foreground">sage.aya@maternite-cocody.ci</div>
+                            </div>
+                          </Button>
+
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleDemoLogin('marieInfirmiere')}
+                            className="justify-start text-left h-auto py-2"
+                          >
+                            <span className="mr-2">💉</span>
+                            <div className="text-xs">
+                              <div className="font-semibold">Infirmière - Marie</div>
+                              <div className="text-muted-foreground">marie.infirmiere@pmi-marcory.ci</div>
+                            </div>
+                          </Button>
+                        </div>
+                        <p className="text-xs text-blue-700 mt-3 italic">
+                          Cliquez sur un compte pour remplir automatiquement les champs
+                        </p>
+                      </div>
+                    )}
+                  </AlertDescription>
+                </Alert>
+
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="email">Email</Label>
@@ -266,16 +414,7 @@ export function LoginPage({ onLogin, onBackToHome, onShowRegister }) {
                   </Button>
                 </div>
 
-                {/* Demo credentials */}
-                <div className="p-3 bg-primary/5 border border-primary/20 rounded-lg">
-                  <p className="text-xs text-muted-foreground text-center mb-2">
-                    <strong>Compte de démonstration :</strong>
-                  </p>
-                  <p className="text-xs text-center">
-                    Email: demo@manmiba.ci<br/>
-                    Mot de passe: demo123
-                  </p>
-                </div>
+
 
                 <div className="space-y-2">
                   <Button variant="outline" className="w-full" size="sm">
