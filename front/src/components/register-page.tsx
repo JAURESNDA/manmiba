@@ -25,6 +25,7 @@ export function RegisterPage({ onRegister, onBackToHome, onShowLogin }: Register
     confirmPassword: '',
     userType: '',
     situation: '',
+    professionalRole: '',
     city: '',
     acceptTerms: false
   });
@@ -42,6 +43,8 @@ export function RegisterPage({ onRegister, onBackToHome, onShowLogin }: Register
     { value: 'urbaine-connectee', label: 'Maman urbaine connectée', icon: '📱', description: 'Active, connectée et urbaine' },
     { value: 'rurale-debrouillarde', label: 'Maman rurale débrouillarde', icon: '🌾', description: 'Autonome et proche de la nature' },
     { value: 'future-maman-moderne', label: 'Future maman moderne', icon: '🤰', description: 'Enceinte et bien informée' },
+    { value: 'pere-celibataire', label: 'Papa célibataire', icon: '👨‍👦', description: 'Papa solo qui assure' },
+    { value: 'papa-veuf', label: 'Papa veuf', icon: '🕊️', description: 'Papa courageux et résilient' },
     { value: 'grand-mere-gardienne', label: 'Grand-mère gardienne', icon: '👵', description: 'Gardienne des traditions' },
     { value: 'professionnelle-sante', label: 'Professionnelle de santé', icon: '👩‍⚕️', description: 'Soignante engagée' },
     { value: 'autre', label: 'Autre situation', icon: '👤', description: 'Une autre situation' }
@@ -100,6 +103,7 @@ export function RegisterPage({ onRegister, onBackToHome, onShowLogin }: Register
         phone: formData.phone,
         userType: formData.userType,
         situation: formData.situation,
+        professionalRole: formData.professionalRole,
         city: formData.city
       });
     } catch {
@@ -331,6 +335,38 @@ export function RegisterPage({ onRegister, onBackToHome, onShowLogin }: Register
                     </Select>
                     {errors.situation && <p className="text-xs text-destructive">{errors.situation}</p>}
                   </div>
+
+                  {/* Si professionnel de santé, demander le rôle */}
+                  {formData.situation === 'professionnelle-sante' && (
+                    <div className="space-y-2">
+                      <Label>Votre spécialité</Label>
+                      <Select value={formData.professionalRole} onValueChange={(value) => handleInputChange('professionalRole', value)}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Sélectionnez votre spécialité" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="doctor">
+                            <div className="flex items-center gap-2">
+                              <span>🩺</span>
+                              <span>Médecin / Pédiatre</span>
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="midwife">
+                            <div className="flex items-center gap-2">
+                              <span>🤱</span>
+                              <span>Sage-femme</span>
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="nurse">
+                            <div className="flex items-center gap-2">
+                              <span>💉</span>
+                              <span>Infirmier(ère)</span>
+                            </div>
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
 
                   <div className="space-y-2">
                     <Label>Ville</Label>

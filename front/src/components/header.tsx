@@ -1,7 +1,7 @@
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { ImageWithFallback } from './figma/ImageWithFallback';
-import logoImage from 'figma:asset/9e13c5ebd83bf54eca3ccca342d73f30cf4d9ce4.png';
+import logoImage from '../assets/logo.png';
 import { 
   Bell, 
   Settings, 
@@ -48,13 +48,11 @@ export function Header({
             className="flex items-center gap-3 hover:opacity-80 transition-opacity"
             title="Retour à l'accueil"
           >
-            <div className="h-10 w-10 bg-white rounded-full flex items-center justify-center">
-              <ImageWithFallback 
-                src={logoImage}
-                alt="Manmi Ba Logo"
-                className="h-9 w-9 object-contain"
-              />
-            </div>
+            <ImageWithFallback 
+              src={logoImage}
+              alt="Manmi Ba Logo"
+              className="h-12 w-auto object-contain"
+            />
             <div className="hidden sm:block">
               <h1 className="font-semibold text-primary">Manmi Ba</h1>
               <p className="text-xs text-muted-foreground">Santé familiale</p>

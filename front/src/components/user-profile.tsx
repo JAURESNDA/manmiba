@@ -92,6 +92,8 @@ export function UserProfile({ user, userRole, onUpdateProfile }) {
     'urbaine-connectee': { label: 'Maman urbaine connectée', icon: '📱' },
     'rurale-debrouillarde': { label: 'Maman rurale débrouillarde', icon: '🌾' },
     'future-maman-moderne': { label: 'Future maman moderne', icon: '🤰' },
+    'pere-celibataire': { label: 'Papa célibataire', icon: '👨‍👦' },
+    'papa-veuf': { label: 'Papa veuf', icon: '🕊️' },
     'grand-mere-gardienne': { label: 'Grand-mère gardienne', icon: '👵' },
     'professionnelle-sante': { label: 'Professionnelle de santé', icon: '👩‍⚕️' },
     'autre': { label: 'Autre situation', icon: '👤' }

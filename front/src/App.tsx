@@ -23,6 +23,10 @@ import { Chatbot } from './components/chatbot';
 import { NotificationsPanel } from './components/notifications-panel';
 import { FeaturesCarousel } from './components/features-carousel';
 import { UserProfile } from './components/user-profile';
+import { SocialFeed } from './components/social-feed';
+import { UserConnections } from './components/user-connections';
+import { HealthProfessionalDashboard } from './components/health-professional-dashboard';
+import { RecommendedContent } from './components/recommended-content';
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -52,6 +56,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [selectedChild, setSelectedChild] = useState(null);
   const [userType, setUserType] = useState('parent');
+  const [userRole, setUserRole] = useState(null); // 'doctor', 'midwife', 'nurse'
   const [currentPage, setCurrentPage] = useState('app');
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -229,6 +234,14 @@ export default function App() {
     setUser(userData);
     setIsAuthenticated(true);
     setUserType(userData.userType);
+    
+    // Détecter si c'est un professionnel de santé
+    if (userData.situation === 'professionnelle-sante') {
+      setUserRole(userData.professionalRole || 'doctor');
+    } else {
+      setUserRole(null);
+    }
+    
     setCurrentPage('app');
   };
 
@@ -236,6 +249,14 @@ export default function App() {
     setUser(userData);
     setIsAuthenticated(true);
     setUserType(userData.userType);
+    
+    // Détecter si c'est un professionnel de santé
+    if (userData.situation === 'professionnelle-sante') {
+      setUserRole(userData.professionalRole || 'doctor');
+    } else {
+      setUserRole(null);
+    }
+    
     setCurrentPage('app');
   };
 
@@ -340,7 +361,7 @@ export default function App() {
       )}
 
       {/* Main Layout */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden relative">
         {/* Sidebar Overlay for mobile */}
         {sidebarOpen && !isDesktopSize && (
           <div 
@@ -349,20 +370,36 @@ export default function App() {
           />
         )}
 
-        {/* Sidebar - Desktop */}
+        {/* Sidebar - Desktop (Fixed) */}
         {isAuthenticated && showDesktopLayout && (
+          <aside className="hidden lg:block w-64 flex-shrink-0">
+            <div className="fixed top-[var(--header-height,61px)] h-[calc(100vh-var(--header-height,61px))] w-64 overflow-y-auto">
+              <AppSidebar 
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+                userType={userType}
+                vaccinations={vaccinations}
+                isOpen={true}
+                onClose={() => setSidebarOpen(false)}
+              />
+            </div>
+          </aside>
+        )}
+
+        {/* Sidebar - Mobile */}
+        {isAuthenticated && sidebarOpen && !isDesktopSize && (
           <AppSidebar 
             activeTab={activeTab}
             setActiveTab={setActiveTab}
             userType={userType}
             vaccinations={vaccinations}
-            isOpen={isDesktopSize ? true : sidebarOpen}
+            isOpen={sidebarOpen}
             onClose={() => setSidebarOpen(false)}
           />
         )}
 
         {/* Main Content */}
-        <main className={`flex-1 overflow-y-auto ${showDesktopLayout && isAuthenticated ? 'pb-4' : 'pb-20'}`}>
+        <main className={`flex-1 overflow-y-auto flex flex-col ${showDesktopLayout && isAuthenticated ? '' : 'pb-20'}`}>
           {!isAuthenticated ? (
             // Landing page for non-authenticated users
             <div className="px-4 py-8">
@@ -379,12 +416,12 @@ export default function App() {
                         Bienvenue sur Manmi Ba
                       </h1>
                       <p className="text-lg text-muted-foreground">
-                        Votre compagnon numérique pour la santé de votre famille en Côte d'Ivoire
+                        Le réseau social des parents en Côte d'Ivoire - Partagez, apprenez et grandissez ensemble
                       </p>
                     </div>
                     <div className="space-y-4">
                       <p className="text-sm text-muted-foreground">
-                        Rejoignez des milliers de familles ivoiriennes qui font confiance à Manmi Ba
+                        Rejoignez une communauté de milliers de parents (mamans, papas célibataires, papas veufs) qui partagent leur expérience
                       </p>
                       <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
                         <Button size="lg" onClick={() => setCurrentPage('register')}>
@@ -405,39 +442,39 @@ export default function App() {
 
                 {/* Features Grid */}
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                  <Card>
+                  <Card className="hover:shadow-lg transition-shadow">
+                    <CardContent className="p-6 text-center">
+                      <MessageCircle className="h-8 w-8 mx-auto mb-4 text-primary" />
+                      <h3 className="font-semibold mb-2">Réseau Social</h3>
+                      <p className="text-sm text-muted-foreground">
+                        Partagez votre expérience, posez vos questions, connectez-vous
+                      </p>
+                    </CardContent>
+                  </Card>
+                  <Card className="hover:shadow-lg transition-shadow">
+                    <CardContent className="p-6 text-center">
+                      <Users className="h-8 w-8 mx-auto mb-4 text-primary" />
+                      <h3 className="font-semibold mb-2">Tous les parents</h3>
+                      <p className="text-sm text-muted-foreground">
+                        Mamans, papas célibataires, papas veufs - Tous unis
+                      </p>
+                    </CardContent>
+                  </Card>
+                  <Card className="hover:shadow-lg transition-shadow">
                     <CardContent className="p-6 text-center">
                       <Heart className="h-8 w-8 mx-auto mb-4 text-primary" />
-                      <h3 className="font-semibold mb-2">Suivi de grossesse</h3>
+                      <h3 className="font-semibold mb-2">Suivi de santé</h3>
                       <p className="text-sm text-muted-foreground">
-                        Calendrier personnalisé, rappels CPN, conseils nutrition
+                        Vaccinations, croissance, journal de santé
                       </p>
                     </CardContent>
                   </Card>
-                  <Card>
-                    <CardContent className="p-6 text-center">
-                      <Syringe className="h-8 w-8 mx-auto mb-4 text-primary" />
-                      <h3 className="font-semibold mb-2">Vaccinations</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Calendrier vaccinal ivoirien, rappels automatiques
-                      </p>
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardContent className="p-6 text-center">
-                      <TrendingUp className="h-8 w-8 mx-auto mb-4 text-primary" />
-                      <h3 className="font-semibold mb-2">Croissance</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Courbes de l'OMS, suivi du développement
-                      </p>
-                    </CardContent>
-                  </Card>
-                  <Card>
+                  <Card className="hover:shadow-lg transition-shadow">
                     <CardContent className="p-6 text-center">
                       <Stethoscope className="h-8 w-8 mx-auto mb-4 text-primary" />
-                      <h3 className="font-semibold mb-2">Guide santé</h3>
+                      <h3 className="font-semibold mb-2">Conseils experts</h3>
                       <p className="text-sm text-muted-foreground">
-                        Symptômes, premiers secours, conseils experts
+                        Professionnels de santé, guides validés
                       </p>
                     </CardContent>
                   </Card>
@@ -456,13 +493,23 @@ export default function App() {
             <div className="max-w-7xl mx-auto px-4 py-4">
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                 <TabsContent value="home" className="mt-0">
-                  {userType === 'pregnant' ? (
+                  {/* Interface professionnels de santé */}
+                  {userRole ? (
+                    <HealthProfessionalDashboard user={user} role={userRole} />
+                  ) : userType === 'pregnant' ? (
                     <PregnancyTracker 
                       pregnancyData={pregnancyData[0]} 
                       appointments={pregnancyAppointments} 
                     />
                   ) : (
-                    <div className="space-y-4">
+                    <div className="space-y-6">
+                      {/* Contenu recommandé */}
+                      <RecommendedContent 
+                        userSituation={user?.situation} 
+                        userType={userType}
+                      />
+
+                      <div className="space-y-4">
                       {/* Welcome message */}
                       <Card>
                         <CardContent className="p-4">
@@ -545,6 +592,7 @@ export default function App() {
                           ))}
                         </CardContent>
                       </Card>
+                    </div>
                     </div>
                   )}
                 </TabsContent>
@@ -659,6 +707,14 @@ export default function App() {
                   <HealthcareDirectory />
                 </TabsContent>
 
+                <TabsContent value="social" className="mt-0">
+                  <SocialFeed currentUser={user} />
+                </TabsContent>
+
+                <TabsContent value="connections" className="mt-0">
+                  <UserConnections />
+                </TabsContent>
+
                 <TabsContent value="community" className="mt-0">
                   <CommunitySupport />
                 </TabsContent>
@@ -719,6 +775,9 @@ export default function App() {
               </Tabs>
             </div>
           )}
+
+          {/* Footer - Only show when not authenticated or on desktop layout */}
+          {(!isAuthenticated || showDesktopLayout) && <Footer />}
         </main>
       </div>
 
@@ -738,14 +797,14 @@ export default function App() {
             </button>
             
             <button
-              onClick={() => setActiveTab('profile')}
+              onClick={() => setActiveTab('social')}
               className={`flex flex-col items-center justify-center gap-1 h-full transition-colors ${
-                activeTab === 'profile' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
+                activeTab === 'social' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
               }`}
-              title="Mon Profil"
+              title="Fil Social"
             >
-              <User className="h-5 w-5" />
-              <span className="text-xs">Profil</span>
+              <MessageCircle className="h-5 w-5" />
+              <span className="text-xs">Social</span>
             </button>
 
             {userType === 'parent' ? (
@@ -812,6 +871,10 @@ export default function App() {
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem onClick={() => setActiveTab('profile')}>
+                  <User className="h-4 w-4 mr-2" />
+                  Mon Profil
+                </DropdownMenuItem>
                 {userType === 'parent' && (
                   <>
                     <DropdownMenuItem onClick={() => setActiveTab('growth')}>
@@ -822,15 +885,11 @@ export default function App() {
                       <Stethoscope className="h-4 w-4 mr-2" />
                       Symptômes
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setActiveTab('nutrition')}>
-                      <Apple className="h-4 w-4 mr-2" />
-                      Nutrition
-                    </DropdownMenuItem>
                   </>
                 )}
-                <DropdownMenuItem onClick={() => setActiveTab('community')}>
-                  <MessageCircle className="h-4 w-4 mr-2" />
-                  Communauté
+                <DropdownMenuItem onClick={() => setActiveTab('nutrition')}>
+                  <Apple className="h-4 w-4 mr-2" />
+                  Nutrition
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setActiveTab('directory')}>
                   <MapPin className="h-4 w-4 mr-2" />
@@ -845,9 +904,6 @@ export default function App() {
           </div>
         </nav>
       )}
-
-      {/* Footer - Only show when not authenticated or on desktop layout */}
-      {(!isAuthenticated || showDesktopLayout) && <Footer />}
 
       {/* Floating Chat Button */}
       {isAuthenticated && !showChat && (

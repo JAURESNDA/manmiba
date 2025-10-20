@@ -1,6 +1,7 @@
 
   import { defineConfig } from 'vite';
   import react from '@vitejs/plugin-react-swc';
+  import logo from "@/assets/logo.png";
   import path from 'path';
 
   export default defineConfig({
@@ -17,7 +18,7 @@
         'next-themes@0.4.6': 'next-themes',
         'lucide-react@0.487.0': 'lucide-react',
         'input-otp@1.4.2': 'input-otp',
-        'figma:asset/9e13c5ebd83bf54eca3ccca342d73f30cf4d9ce4.png': path.resolve(__dirname, './src/assets/9e13c5ebd83bf54eca3ccca342d73f30cf4d9ce4.png'),
+        '@': path.resolve(__dirname, './src/'),
         'embla-carousel-react@8.6.0': 'embla-carousel-react',
         'cmdk@1.1.1': 'cmdk',
         'class-variance-authority@0.7.1': 'class-variance-authority',

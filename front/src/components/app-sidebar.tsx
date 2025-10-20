@@ -32,6 +32,8 @@ export function AppSidebar({
 
   const menuItems = userType === 'parent' ? [
     { id: 'home', label: 'Accueil', icon: Home },
+    { id: 'social', label: 'Fil Social', icon: MessageCircle },
+    { id: 'connections', label: 'Connexions', icon: Users },
     { id: 'profile', label: 'Mon Profil', icon: User },
     { id: 'vaccinations', label: 'Vaccinations', icon: Syringe, badge: getPendingVaccinations() },
     { id: 'growth', label: 'Croissance', icon: TrendingUp },
@@ -39,22 +41,22 @@ export function AppSidebar({
     { id: 'symptoms', label: 'Symptômes', icon: Stethoscope },
     { id: 'nutrition', label: 'Nutrition', icon: Apple },
     { id: 'directory', label: 'Annuaire', icon: MapPin },
-    { id: 'community', label: 'Communauté', icon: MessageCircle },
     { id: 'education', label: 'Éducation', icon: GraduationCap },
   ] : [
     { id: 'home', label: 'Accueil', icon: Home },
+    { id: 'social', label: 'Fil Social', icon: MessageCircle },
+    { id: 'connections', label: 'Connexions', icon: Users },
     { id: 'profile', label: 'Mon Profil', icon: User },
     { id: 'symptoms', label: 'Symptômes', icon: Stethoscope },
     { id: 'nutrition', label: 'Nutrition', icon: Apple },
     { id: 'directory', label: 'Annuaire', icon: MapPin },
-    { id: 'community', label: 'Communauté', icon: MessageCircle },
     { id: 'education', label: 'Éducation', icon: GraduationCap },
   ];
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed lg:sticky top-0 left-0 h-screen w-64 bg-sidebar border-r border-sidebar-border z-40 flex flex-col">
+    <div className="h-full w-full bg-sidebar border-r border-sidebar-border flex flex-col lg:static fixed left-0 top-0 z-40 lg:z-auto">
       {/* Mobile Close Button */}
       <div className="lg:hidden flex justify-end p-2">
         <Button variant="ghost" size="sm" onClick={onClose}>
